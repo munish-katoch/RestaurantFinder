@@ -13,6 +13,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class YelpRepository {
@@ -37,7 +38,7 @@ public class YelpRepository {
             retrofit = new retrofit2.Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(client)
-                    //.addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
         Callback<YelpSearchResponse> callback = new Callback <YelpSearchResponse>() {
@@ -56,7 +57,7 @@ public class YelpRepository {
         Map<String, String> params = new HashMap<>();
 
         // general params
-        params.put("term", "indian food");
+        params.put("term", "restaurants");
         params.put("latitude", "40.581140");
         params.put("longitude", "-111.914184");
 
