@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /*
 Top Level Search Response.
@@ -43,4 +47,21 @@ public class YelpSearchResponse  implements Serializable {
         this.total = total;
     }
     int total;
+
+    public ArrayList<Business> getBusinessesSortByCategory() {
+//        Map<String,HashSet<Business>> map = new HashMap<String,HashSet<Business>>();
+//        for(Business business:businesses) {
+//            for (Category categorie : business.getCategories()) {
+//                String categorieStr = categorie.getAlias();
+//                if (map.containsKey(categorieStr)) {
+//                    (map.get(categorieStr)).add(business);
+//                } else {
+//                    HashSet newHashSet = new HashSet<Business>();
+//                    newHashSet.add(business);
+//                    map.put(categorieStr,newHashSet );
+//                }
+//            }
+//        }
+        return this.businesses;
+    }
 }

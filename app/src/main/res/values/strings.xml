@@ -90,4 +90,8 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="current_location">Current Location</string>
+    <string name="sort">Sort</string>
+    <string name="action_bar_title">Yelp Restaurant Finder</string>
+    <string name="error_failure_yelp_response">Unable to fetch date from Yelp!. Error Details:</string>
 </resources>
