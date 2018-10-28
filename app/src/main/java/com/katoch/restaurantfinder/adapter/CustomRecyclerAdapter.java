@@ -1,5 +1,7 @@
 package com.katoch.restaurantfinder.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.katoch.restaurantfinder.R;
+import com.katoch.restaurantfinder.Utils;
 import com.katoch.restaurantfinder.model.Business;
+import com.katoch.restaurantfinder.view.DetailViewActivity;
 
 import java.util.ArrayList;
 
@@ -17,6 +21,11 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
     private static final String TAG = "CustomRecyclerAdapter";
 
     private ArrayList<Business> mDataSet;
+    private Context mContext;
+
+    public CustomRecyclerAdapter(Context context) {
+        mContext = context;
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView; //icon
@@ -26,12 +35,6 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
 
         public ViewHolder(View v) {
             super(v);
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
-                }
-            });
             imageView = (ImageView) v.findViewById(R.id.icon);
             nameTextView = (TextView) v.findViewById(R.id.restaurant_name);
             categoryTextView = (TextView) v.findViewById(R.id.restaurant_category);
@@ -55,20 +58,15 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
         }
     }
 
-    /**
-     * Initialize the dataset of the Adapter.
-     *
-     */
-    public CustomRecyclerAdapter() {
-        //mDataSet = dataSet;
-
+    private void startDetailViewActivity(Business object) {
+        Intent intent = new Intent(mContext, DetailViewActivity.class);
+        intent.putExtra(Utils.EXTRA_BUSINESS_DETAIL, object);
+        mContext.startActivity(intent);
     }
-
     public void setData( ArrayList<Business> dataSet) {
         mDataSet = dataSet;
     }
-    // BEGIN_INCLUDE(recyclerViewOnCreateViewHolder)
-    // Create new views (invoked by the layout manager)
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view.
@@ -77,23 +75,27 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
 
         return new ViewHolder(v);
     }
-    // END_INCLUDE(recyclerViewOnCreateViewHolder)
 
-    // BEGIN_INCLUDE(recyclerViewOnBindViewHolder)
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        Log.d(TAG, "Element " + position + " set.");
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Element " + position + " click");
+                startDetailViewActivity(mDataSet.get(position));
+            }
+        });
 
         viewHolder.getNameTextView().setText(mDataSet.get(position).getName());
         viewHolder.getCategoryTextView().setText(mDataSet.get(position).getCategories().get(0).getAlias());
         viewHolder.getPriceTextView().setText(mDataSet.get(position).getPrice());
     }
-    // END_INCLUDE(recyclerViewOnBindViewHolder)
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return (mDataSet !=null)?mDataSet.size():0;
     }
+
+
 }

@@ -12,6 +12,8 @@ import android.location.Location;
 
 public class Utils {
 
+    public static final String EXTRA_BUSINESS_DETAIL ="BUSINESS_DETAIL";
+
     public static boolean isNetworkAvailable(Context context) {
         boolean haveConnectedWifi = false;
         boolean haveConnectedMobile = false;

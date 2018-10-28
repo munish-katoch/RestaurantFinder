@@ -143,4 +143,12 @@ public class Business implements Serializable
     }
     Coordinates coordinates;
 
+    @JsonGetter("address1")
+    public String getAddress() {
+        return this.address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    String address;
 }

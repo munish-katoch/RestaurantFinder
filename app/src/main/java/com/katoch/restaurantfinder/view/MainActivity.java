@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity  implements IView{
         actionBar.setTitle(R.string.action_bar_title);
         mRecyclerView = findViewById(R.id.recycler_view);
         if ( mRecyclerView != null ) {
-            mAdapter = new CustomRecyclerAdapter();
+            mAdapter = new CustomRecyclerAdapter(this);
             mRecyclerView.setAdapter(mAdapter);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
