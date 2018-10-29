@@ -63,10 +63,10 @@ public class YelpPresenter implements IPresenter{
             @Override
             public void onResponse(Call<YelpSearchResponse> call, Response<YelpSearchResponse> response) {
                 YelpSearchResponse response1 = response.body();
-                Log.d(TAG,"Total =" + response1.getTotal());
-                ArrayList<Business> list = response1.getBusinesses();
-                Log.d(TAG,"Name =" + list.get(0).getName());
-                Log.d(TAG,"Businesses size =" +  list.size());
+//                Log.d(TAG,"Total =" + response1.getTotal());
+//                ArrayList<Business> list = response1.getBusinesses();
+//                Log.d(TAG,"Name =" + list.get(0).getName());
+//                Log.d(TAG,"Businesses size =" +  list.size());
                 //View->Update UI.
                 mActivityView.setBusinessesInfo(response1.getBusinesses());
             }
