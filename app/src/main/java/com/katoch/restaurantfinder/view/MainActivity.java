@@ -3,6 +3,7 @@ package com.katoch.restaurantfinder.view;
 import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.katoch.restaurantfinder.R;
 import com.katoch.restaurantfinder.Utils;
@@ -128,7 +130,7 @@ public class MainActivity extends AppCompatActivity  implements IView{
     @Override
     public void onFailure(String error) {
         mSpinner.setVisibility(View.GONE);
-
-
+        Toast.makeText(this,error,Toast.LENGTH_LONG).show();
+        finish();
     }
 }

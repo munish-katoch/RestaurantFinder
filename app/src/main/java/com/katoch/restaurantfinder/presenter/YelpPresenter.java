@@ -53,12 +53,6 @@ public class YelpPresenter implements IPresenter{
 
     @Override
     public void requestBusinessesInfo(String latitude, String longitude) {
-        //Check internet connection. Error if No Internet connect to UI.
-        if(!Utils.isNetworkAvailable(mContext)) {
-
-            return;
-        }
-
         Callback<YelpSearchResponse> callback = new Callback <YelpSearchResponse>() {
             @Override
             public void onResponse(Call<YelpSearchResponse> call, Response<YelpSearchResponse> response) {
@@ -81,11 +75,6 @@ public class YelpPresenter implements IPresenter{
 
     @Override
     public void requestBusinessPhotos(String businessId) {
-        //Check internet connection. Error if No Internet connect to UI.
-        if(!Utils.isNetworkAvailable(mContext)) {
-            return;
-        }
-
         Callback<BusinessDetail> callback = new Callback <BusinessDetail>() {
             @Override
             public void onResponse(Call<BusinessDetail> call, Response<BusinessDetail> response) {
