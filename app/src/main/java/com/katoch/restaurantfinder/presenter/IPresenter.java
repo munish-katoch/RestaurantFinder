@@ -4,7 +4,8 @@ import com.katoch.restaurantfinder.view.IView;
 
 public interface IPresenter {
     void attach(IView view);
-    void requestData(String latitude, String longitude);
+    void requestBusinessesInfo(String latitude, String longitude);
+    void requestBusinessPhotos(String businessId);
     void onSearch(String searchStr);
     void onSort();
     void detach();

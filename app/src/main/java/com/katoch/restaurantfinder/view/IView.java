@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public interface IView {
     void showProgress();
-    void setDataToRecyclerView(ArrayList<Business> dataSet);
+    void setBusinessesInfo(ArrayList<Business> dataSet);
+    void setBusinessPhoto(ArrayList<String> photos);
     void onFailure(String errorStr);
 }

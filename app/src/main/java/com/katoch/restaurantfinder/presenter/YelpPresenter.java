@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.katoch.restaurantfinder.Utils;
 import com.katoch.restaurantfinder.model.Business;
+import com.katoch.restaurantfinder.model.BusinessDetail;
 import com.katoch.restaurantfinder.model.YelpRepository;
 import com.katoch.restaurantfinder.model.YelpSearchResponse;
 import com.katoch.restaurantfinder.view.IView;
@@ -51,7 +52,7 @@ public class YelpPresenter implements IPresenter{
     }
 
     @Override
-    public void requestData(String latitude, String longitude) {
+    public void requestBusinessesInfo(String latitude, String longitude) {
         //Check internet connection. Error if No Internet connect to UI.
         if(!Utils.isNetworkAvailable(mContext)) {
 
@@ -67,7 +68,7 @@ public class YelpPresenter implements IPresenter{
                 Log.d(TAG,"Name =" + list.get(0).getName());
                 Log.d(TAG,"Businesses size =" +  list.size());
                 //View->Update UI.
-                mActivityView.setDataToRecyclerView(response1.getBusinesses());
+                mActivityView.setBusinessesInfo(response1.getBusinesses());
             }
             @Override
             public void onFailure(Call<YelpSearchResponse> call, Throwable t) {
@@ -77,4 +78,29 @@ public class YelpPresenter implements IPresenter{
         };
         yelpRepository.getBusinessesSortByCategory(latitude,longitude,callback);
     }
+
+    @Override
+    public void requestBusinessPhotos(String businessId) {
+        //Check internet connection. Error if No Internet connect to UI.
+        if(!Utils.isNetworkAvailable(mContext)) {
+            return;
+        }
+
+        Callback<BusinessDetail> callback = new Callback <BusinessDetail>() {
+            @Override
+            public void onResponse(Call<BusinessDetail> call, Response<BusinessDetail> response) {
+//                //View->Update UI.
+                mActivityView.setBusinessPhoto(response.body().getPhotos());
+            }
+
+            @Override
+            public void onFailure(Call<BusinessDetail> call, Throwable t) {
+                //View -> OnError. Error= t.getMessage()
+                mActivityView.onFailure(mContext.getString(com.katoch.restaurantfinder.R.string.error_failure_yelp_response) + t.getMessage());
+            }
+
+        };
+        yelpRepository.getBusinessPhotos(businessId,callback);
+    }
+
 }

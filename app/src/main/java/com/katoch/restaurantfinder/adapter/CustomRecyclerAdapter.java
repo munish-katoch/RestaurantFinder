@@ -14,6 +14,7 @@ import com.katoch.restaurantfinder.R;
 import com.katoch.restaurantfinder.Utils;
 import com.katoch.restaurantfinder.model.Business;
 import com.katoch.restaurantfinder.view.DetailViewActivity;
+import com.katoch.restaurantfinder.view.GlideApp;
 
 import java.util.ArrayList;
 
@@ -86,10 +87,14 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
                 startDetailViewActivity(mDataSet.get(position));
             }
         });
-
+        Log.d(TAG, "Element " + position + "URL: " + mDataSet.get(position).getImageUrl());
         viewHolder.getNameTextView().setText(mDataSet.get(position).getName());
         viewHolder.getCategoryTextView().setText(mDataSet.get(position).getCategories().get(0).getAlias());
         viewHolder.getPriceTextView().setText(mDataSet.get(position).getPrice());
+        String url = mDataSet.get(position).getImageUrl();
+        if (url!=null)  GlideApp.with(mContext).load(url).into(viewHolder.getIconView());
+
+
     }
 
     @Override

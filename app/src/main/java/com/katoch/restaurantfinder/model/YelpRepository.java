@@ -1,9 +1,6 @@
 package com.katoch.restaurantfinder.model;
 
-import android.util.Log;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,10 +9,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
 
 public class YelpRepository {
     private static final String TAG = "YelpRepository";
@@ -24,6 +19,7 @@ public class YelpRepository {
 
     private Retrofit mRetrofit;
     private Call mCurrentCall;
+    private OkHttpClient mClient;
 
     public YelpRepository() {
         try {
@@ -34,7 +30,7 @@ public class YelpRepository {
     }
 
     public Retrofit getRetrofitInstance() throws IOException {
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+        mClient = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
                 Request newRequest  = chain.request().newBuilder()
@@ -46,7 +42,7 @@ public class YelpRepository {
         if (mRetrofit == null) {
             mRetrofit = new retrofit2.Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .client(client)
+                    .client(mClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
@@ -75,9 +71,23 @@ public class YelpRepository {
         mCurrentCall.enqueue(callback);
     }
 
+    public void getBusinessPhotos(String businessId,Callback<BusinessDetail> callback  ) {
+        if (mRetrofit == null) {
+            try {
+                mRetrofit = getRetrofitInstance();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        YelpWebservice webservice = mRetrofit.create(YelpWebservice.class);
+        Call<BusinessDetail>  call = webservice.getBusinessPhotos(businessId);
+        call.enqueue(callback);
+    }
+
     public void cancelOngoingCommand(){
-        if (mCurrentCall!= null && mCurrentCall.isExecuted()){
-            mCurrentCall.cancel();
+        if (mClient!= null ){
+            mClient.dispatcher().cancelAll();
         }
     }
 

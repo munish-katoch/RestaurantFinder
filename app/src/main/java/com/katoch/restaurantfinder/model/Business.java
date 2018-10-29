@@ -44,6 +44,16 @@ import java.util.ArrayList;
  */
 public class Business implements Serializable
 {
+    @JsonGetter("id")
+    public String getId() {
+        return this.id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+    String id;
+
+
     @JsonGetter("image_url")
     public String getImageUrl() {
         return this.imageUrl;

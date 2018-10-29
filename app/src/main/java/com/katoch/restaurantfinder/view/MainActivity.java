@@ -44,14 +44,13 @@ public class MainActivity extends AppCompatActivity  implements IView{
 
         mPresenter = PresenterFactory.getInstance(getApplicationContext());
         mPresenter.attach(this);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Location location = Utils.getLastKnownOrDefaultLocation(this);
-        mPresenter.requestData(Double.toString(location.getLatitude()),Double.toString(location.getLongitude()));
+        mPresenter.requestBusinessesInfo(Double.toString(location.getLatitude()),Double.toString(location.getLongitude()));
     }
 
     @Override
@@ -99,8 +98,8 @@ public class MainActivity extends AppCompatActivity  implements IView{
     }
 
     @Override
-    public void setDataToRecyclerView(final ArrayList<Business> dataSet) {
-        Log.d(TAG,"setDataToRecyclerView");
+    public void setBusinessesInfo(final ArrayList<Business> dataSet) {
+        Log.d(TAG,"setBusinessesInfo");
         mAdapter.setData(dataSet);
         mAdapter.notifyDataSetChanged();
 //        runOnUiThread(new Runnable() {
@@ -108,6 +107,11 @@ public class MainActivity extends AppCompatActivity  implements IView{
 //
 //            }
 //        });
+    }
+
+    @Override
+    public void setBusinessPhoto(ArrayList<String> photos) {
+
     }
 
     @Override

@@ -2,36 +2,77 @@ package com.katoch.restaurantfinder.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.katoch.restaurantfinder.R;
 import com.katoch.restaurantfinder.Utils;
 import com.katoch.restaurantfinder.model.Business;
+import com.katoch.restaurantfinder.presenter.IPresenter;
+import com.katoch.restaurantfinder.presenter.PresenterFactory;
 
-public class DetailViewActivity extends Activity {
+import java.util.ArrayList;
+
+public class DetailViewActivity extends Activity implements IView{
+
+    private static final String TAG = "DetailViewActivity";
+    private IPresenter mPresenter = null;
+    private Business mBusinessObj;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         Intent intent = getIntent();
-        Business businessObj = (Business) intent.getSerializableExtra(Utils.EXTRA_BUSINESS_DETAIL);
-        //imageView1 - imageView10
-        //restaurant_title
-        //restaurant_address
-        //restaurant_phone
-        //restaurant_review
+        mBusinessObj = (Business) intent.getSerializableExtra(Utils.EXTRA_BUSINESS_DETAIL);
+
+        mPresenter = PresenterFactory.getInstance(getApplicationContext());
+        mPresenter.attach(this);
+
         TextView titleView = findViewById(R.id.restaurant_title);
-        titleView.setText(businessObj.getName());
+        titleView.setText(mBusinessObj.getName());
 
         TextView addressView = findViewById(R.id.restaurant_address);
-        addressView.setText(businessObj.getAddress());
+        addressView.setText(mBusinessObj.getAddress());
 
         TextView phoneView = findViewById(R.id.restaurant_phone);
-        phoneView.setText(businessObj.getPhone());
+        phoneView.setText(mBusinessObj.getPhone());
 
         TextView reviewView = findViewById(R.id.restaurant_review);
-        reviewView.setText("Rating " + businessObj.getRating());
+        reviewView.setText("Rating " + mBusinessObj.getRating());
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.requestBusinessPhotos(mBusinessObj.getId());
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void setBusinessesInfo(ArrayList<Business> dataSet) {
+
+    }
+
+    @Override
+    public void setBusinessPhoto(ArrayList<String> photos) {
+        if( photos != null && (photos.size() > 0)) {
+            ImageView imageview1 = findViewById(R.id.imageView1);
+            GlideApp.with(this).load(photos.get(0)).into(imageview1);
+        }
+    }
+
+    @Override
+    public void onFailure(String errorStr) {
+
+    }
 }
