@@ -2,16 +2,15 @@ package com.katoch.restaurantfinder.view;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
-import android.widget.ScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.katoch.restaurantfinder.R;
 import com.katoch.restaurantfinder.Utils;
-import com.katoch.restaurantfinder.model.Business;
+import com.katoch.restaurantfinder.data.Business;
+import com.katoch.restaurantfinder.data.BusinessCategory;
 import com.katoch.restaurantfinder.presenter.IPresenter;
 import com.katoch.restaurantfinder.presenter.PresenterFactory;
 
@@ -37,7 +36,7 @@ public class DetailViewActivity extends Activity implements IView{
         titleView.setText(mBusinessObj.getName());
 
         TextView addressView = findViewById(R.id.restaurant_address);
-        addressView.setText(mBusinessObj.getAddress());
+        addressView.setText(mBusinessObj.getLocation().getAddress1() + " " + mBusinessObj.getLocation().getCity());
 
         TextView phoneView = findViewById(R.id.restaurant_phone);
         phoneView.setText(mBusinessObj.getPhone());
@@ -54,20 +53,24 @@ public class DetailViewActivity extends Activity implements IView{
     }
 
     @Override
-    public void showProgress() {
+    public void setBusinessesInfo(ArrayList<BusinessCategory> dataSet) {
 
     }
 
-    @Override
-    public void setBusinessesInfo(ArrayList<Business> dataSet) {
-
-    }
 
     @Override
     public void setBusinessPhoto(ArrayList<String> photos) {
-        if( photos != null && (photos.size() > 0)) {
-            ImageView imageview1 = findViewById(R.id.imageView1);
-            GlideApp.with(this).load(photos.get(0)).into(imageview1);
+        if( photos == null) return;
+
+        LinearLayout layout = (LinearLayout) findViewById(R.id.image_list_view);
+        int i = 1;
+        for (String photo : photos) {
+            ImageView imageView = new ImageView(this);
+            imageView.setId(i++);
+            imageView.setPadding(2, 2, 2, 2);
+            GlideApp.with(this).load(photo).into(imageView);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            layout.addView(imageView);
         }
     }
 

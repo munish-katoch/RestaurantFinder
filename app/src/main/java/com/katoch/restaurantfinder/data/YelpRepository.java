@@ -1,4 +1,4 @@
-package com.katoch.restaurantfinder.model;
+package com.katoch.restaurantfinder.data;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class YelpRepository {
         mClient = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request newRequest  = chain.request().newBuilder()
+                Request newRequest = chain.request().newBuilder()
                         .addHeader("Authorization", "Bearer " + API_KEY)
                         .build();
                 return chain.proceed(newRequest);
@@ -51,7 +51,7 @@ public class YelpRepository {
         return mRetrofit;
     }
 
-    public void getBusinessesSortByCategory(String latitude, String longitude,Callback<YelpSearchResponse> callback ) {
+    public void getBusinessesSortByCategory(String latitude, String longitude, Callback<YelpSearchResponse> callback) {
         if (mRetrofit == null) {
             try {
                 mRetrofit = getRetrofitInstance();
@@ -67,11 +67,11 @@ public class YelpRepository {
         params.put("longitude", longitude);
         params.put("limit", "50");
 
-        Call<YelpSearchResponse>  mCurrentCall = webservice.getBusinessSearch(params);
+        Call<YelpSearchResponse> mCurrentCall = webservice.getBusinessSearch(params);
         mCurrentCall.enqueue(callback);
     }
 
-    public void getBusinessPhotos(String businessId,Callback<BusinessDetail> callback  ) {
+    public void getBusinessPhotos(String businessId, Callback<BusinessDetail> callback) {
         if (mRetrofit == null) {
             try {
                 mRetrofit = getRetrofitInstance();
@@ -81,14 +81,13 @@ public class YelpRepository {
         }
 
         YelpWebservice webservice = mRetrofit.create(YelpWebservice.class);
-        Call<BusinessDetail>  call = webservice.getBusinessPhotos(businessId);
+        Call<BusinessDetail> call = webservice.getBusinessPhotos(businessId);
         call.enqueue(callback);
     }
 
-    public void cancelOngoingCommand(){
-        if (mClient!= null ){
+    public void cancelOngoingCommand() {
+        if (mClient != null) {
             mClient.dispatcher().cancelAll();
         }
     }
-
 }

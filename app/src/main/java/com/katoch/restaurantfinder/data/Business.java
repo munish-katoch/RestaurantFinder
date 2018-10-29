@@ -1,4 +1,4 @@
-package com.katoch.restaurantfinder.model;
+package com.katoch.restaurantfinder.data;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 
@@ -161,4 +161,5 @@ public class Business implements Serializable
         this.address = address;
     }
     String address;
+
 }

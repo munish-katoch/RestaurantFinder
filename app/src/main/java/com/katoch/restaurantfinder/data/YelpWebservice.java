@@ -1,4 +1,4 @@
-package com.katoch.restaurantfinder.model;
+package com.katoch.restaurantfinder.data;
 
 import java.util.Map;
 
