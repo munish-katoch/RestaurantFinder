@@ -11,8 +11,12 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField 'String', 'API_KEY', YELP_API_KEY
+        }
         release {
             minifyEnabled false
+            buildConfigField 'String', 'API_KEY', YELP_API_KEY
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

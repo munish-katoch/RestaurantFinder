@@ -1,5 +1,7 @@
 package com.katoch.restaurantfinder.data;
 
+import com.katoch.restaurantfinder.BuildConfig;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,10 +17,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class YelpRepository {
     private static final String TAG = "YelpRepository";
     private static final String BASE_URL = "https://api.yelp.com";
-    private static final String API_KEY = "R2Sc7Q-gezuwakeW4a6jeImAGUK2YLzq6cfV6xyXA_g9hbFfblINtgYRwxscFJQCUNNI22aQik756ZhbjGNLzgqmEU8XEycDvKATbokqLEXsxYzMyquPq5N3tmXSW3Yx";
+    private static final String API_KEY = BuildConfig.API_KEY;
 
     private Retrofit mRetrofit;
-    private Call mCurrentCall;
     private OkHttpClient mClient;
 
     public YelpRepository() {
@@ -67,8 +68,8 @@ public class YelpRepository {
         params.put("longitude", longitude);
         params.put("limit", "50");
 
-        Call<YelpSearchResponse> mCurrentCall = webservice.getBusinessSearch(params);
-        mCurrentCall.enqueue(callback);
+        Call<YelpSearchResponse> call = webservice.getBusinessSearch(params);
+        call.enqueue(callback);
     }
 
     public void getBusinessPhotos(String businessId, Callback<BusinessDetail> callback) {
