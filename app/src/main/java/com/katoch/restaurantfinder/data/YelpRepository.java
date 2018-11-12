@@ -1,94 +1,45 @@
 package com.katoch.restaurantfinder.data;
 
-import com.katoch.restaurantfinder.BuildConfig;
+import com.katoch.restaurantfinder.di.WebModule;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import javax.inject.Inject;
+
+//ToDo No retrofit function.
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class YelpRepository {
     private static final String TAG = "YelpRepository";
-    private static final String BASE_URL = "https://api.yelp.com";
-    private static final String API_KEY = BuildConfig.API_KEY;
 
-    private Retrofit mRetrofit;
-    private OkHttpClient mClient;
+    @Inject
+    public Webservice mWebservice = (new WebModule()).getWebService();
 
-    public YelpRepository() {
-        try {
-            mRetrofit = getRetrofitInstance();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Retrofit getRetrofitInstance() throws IOException {
-        mClient = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request newRequest = chain.request().newBuilder()
-                        .addHeader("Authorization", "Bearer " + API_KEY)
-                        .build();
-                return chain.proceed(newRequest);
-            }
-        }).build();
-        if (mRetrofit == null) {
-            mRetrofit = new retrofit2.Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .client(mClient)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
-
-
-        return mRetrofit;
-    }
 
     public void getBusinessesSortByCategory(String latitude, String longitude, Callback<YelpSearchResponse> callback) {
-        if (mRetrofit == null) {
-            try {
-                mRetrofit = getRetrofitInstance();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
 
-        YelpWebservice webservice = mRetrofit.create(YelpWebservice.class);
         Map<String, String> params = new HashMap<>();
         params.put("term", "restaurants");
         params.put("latitude", latitude);
         params.put("longitude", longitude);
         params.put("limit", "50");
 
-        Call<YelpSearchResponse> call = webservice.getBusinessSearch(params);
+        Call<YelpSearchResponse> call = mWebservice.getBusinessSearch(params);
         call.enqueue(callback);
     }
 
     public void getBusinessPhotos(String businessId, Callback<BusinessDetail> callback) {
-        if (mRetrofit == null) {
-            try {
-                mRetrofit = getRetrofitInstance();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        YelpWebservice webservice = mRetrofit.create(YelpWebservice.class);
-        Call<BusinessDetail> call = webservice.getBusinessPhotos(businessId);
+        Call<BusinessDetail> call = mWebservice.getBusinessPhotos(businessId);
         call.enqueue(callback);
     }
 
     public void cancelOngoingCommand() {
-        if (mClient != null) {
-            mClient.dispatcher().cancelAll();
-        }
+        //ToDo Need to check?
+//        if (mWebservice != null) {
+//            mWebservice.dispatcher().cancelAll();
+//        }
     }
 }
