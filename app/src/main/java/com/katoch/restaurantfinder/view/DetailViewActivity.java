@@ -12,14 +12,17 @@ import com.katoch.restaurantfinder.Utils;
 import com.katoch.restaurantfinder.data.Business;
 import com.katoch.restaurantfinder.data.BusinessCategory;
 import com.katoch.restaurantfinder.presenter.IPresenter;
-import com.katoch.restaurantfinder.presenter.PresenterFactory;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 public class DetailViewActivity extends Activity implements IView{
 
     private static final String TAG = "DetailViewActivity";
-    private IPresenter mPresenter = null;
+
+    @Inject
+    public IPresenter mPresenter;
     private Business mBusinessObj;
 
     @Override
@@ -29,7 +32,6 @@ public class DetailViewActivity extends Activity implements IView{
         Intent intent = getIntent();
         mBusinessObj = (Business) intent.getSerializableExtra(Utils.EXTRA_BUSINESS_DETAIL);
 
-        mPresenter = PresenterFactory.getInstance(getApplicationContext());
         mPresenter.attach(this);
 
         TextView titleView = findViewById(R.id.restaurant_title);

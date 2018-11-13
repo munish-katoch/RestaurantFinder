@@ -4,6 +4,7 @@ import com.katoch.restaurantfinder.BuildConfig;
 
 import java.util.Map;
 
+import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -15,8 +16,8 @@ public interface Webservice {
     public static final String API_KEY = BuildConfig.API_KEY;
 
     @GET("/v3/businesses/search")
-    Call<YelpSearchResponse> getBusinessSearch(@QueryMap Map<String, String> params);
+    Single<YelpSearchResponse> getBusinessSearch(@QueryMap Map<String, String> params);
 
     @GET("/v3/businesses/{id}")
-    Call<BusinessDetail> getBusinessPhotos(@Path("id") String businessId);
+    Single<BusinessDetail> getBusinessPhotos(@Path("id") String businessId);
 }

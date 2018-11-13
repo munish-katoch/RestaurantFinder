@@ -1,5 +1,6 @@
 package com.katoch.restaurantfinder.di;
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.katoch.restaurantfinder.data.Webservice;
 
 import java.io.IOException;
@@ -23,6 +24,8 @@ public class WebModule {
                 .baseUrl(Webservice.BASE_URL)
                 .client(getOkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create())
+                // Need for RxJava adapter.
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 

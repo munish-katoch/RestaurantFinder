@@ -20,14 +20,16 @@ import com.katoch.restaurantfinder.Utils;
 import com.katoch.restaurantfinder.adapter.CustomRecyclerAdapter;
 import com.katoch.restaurantfinder.data.BusinessCategory;
 import com.katoch.restaurantfinder.presenter.IPresenter;
-import com.katoch.restaurantfinder.presenter.PresenterFactory;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 
 public class MainActivity extends AppCompatActivity  implements IView{
 
-    private IPresenter mPresenter = null;
+    @Inject
+    public IPresenter mPresenter;
     private CustomRecyclerAdapter mAdapter = null;
     private RecyclerView mRecyclerView = null;
     private final String TAG="MainActivity";
@@ -49,7 +51,6 @@ public class MainActivity extends AppCompatActivity  implements IView{
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
 
-        mPresenter = PresenterFactory.getInstance(getApplicationContext());
         mPresenter.attach(this);
         Location location = Utils.getLastKnownOrDefaultLocation(this);
         mPresenter.requestBusinessesInfo(Double.toString(location.getLatitude()),Double.toString(location.getLongitude()));
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity  implements IView{
     @Override
     public void onFailure(String error) {
         mSpinner.setVisibility(View.GONE);
-        Toast.makeText(this,error,Toast.LENGTH_LONG).show();
+        Toast.makeText(this,getString(com.katoch.restaurantfinder.R.string.error_failure_yelp_response) +error,Toast.LENGTH_LONG).show();
         finish();
     }
 }
